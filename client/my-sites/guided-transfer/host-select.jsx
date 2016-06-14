@@ -35,13 +35,31 @@ class HostSelect extends Component {
 			<div>
 				<SectionHeader label={ translate( 'Set up Guided Transfer' ) } />
 				<Card>
-					{ hostButtons.map( ( buttonOptions, index ) => {
-						return (
-							<Button className="guided-transfer__host-button" onClick={ buttonOptions.onClick } key={ index }>
-								<img className="guided-transfer__host-button-image" src={ buttonOptions.logo } />
-							</Button>
-						);
-					} ) }
+					<p>{ translate(
+`{{strong}}Please choose{{/strong}} one of our Guided Transfer compatible
+{{partner_link}}partner hosts{{/partner_link}}. You must have a hosting account
+with one of them to be able to move your site. Visit them {{lobby_link}}Guided
+Transfer Lobby{{/lobby_link}} if you have any question before starting, or
+{{learn_link}}learn more{{/learn_link}} about the process.`,
+						{
+							components: {
+								strong: <strong />,
+								partner_link: <a href="/" />,
+								lobby_link: <a href="/" />,
+								learn_link: <a href="/" />,
+							}
+						} ) }
+					</p>
+					<label>{ translate( 'Select your hosting provider' ) }</label>
+					<div>
+						{ hostButtons.map( ( buttonOptions, index ) => {
+							return (
+								<Button className="guided-transfer__host-button" onClick={ buttonOptions.onClick } key={ index }>
+									<img className="guided-transfer__host-button-image" src={ buttonOptions.logo } />
+								</Button>
+							);
+						} ) }
+					</div>
 				</Card>
 			</div>
 		);
