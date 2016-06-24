@@ -14,9 +14,7 @@ import times from 'lodash/times';
 import Main from 'components/main';
 import { getRecommendationIds } from 'state/reader/start/selectors';
 import QueryReaderStartRecommendations from 'components/data/query-reader-start-recommendations';
-import Button from 'components/button';
 import StartCard from './card';
-import RootChild from 'components/root-child';
 import FeedSubscriptionStore from 'lib/reader-feed-subscriptions';
 import smartSetState from 'lib/react-smart-set-state';
 import CardPlaceholder from './card-placeholder';
@@ -70,13 +68,25 @@ const Start = React.createClass( {
 		return (
 			<Main className="reader-start">
 
-				{ /* After one or more sites have been followed */ }
-				<div className="reader-start__bar-following">
-					<span className="reader-start__bar-text">{ this.translate( 'Great! You\'re now following 10 sites' ) }</span>
-					<a className="reader-start__bar-action">{ this.translate( 'OK, I\'m all set!' ) }</a>
-				</div>
-
-
+				{ canGraduate &&
+					<div className="reader-start__bar-following">
+						<span className="reader-start__bar-text">
+							{
+								this.translate(
+									'Great! You\'re now following %(totalSubscriptions)d site.',
+									'Great! You\'re now following %(totalSubscriptions)d sites.',
+									{
+										count: this.state.totalSubscriptions,
+										args: {
+											totalSubscriptions: this.state.totalSubscriptions
+										}
+									}
+								)
+							}
+						</span>
+						<a className="reader-start__bar-action">{ this.translate( 'OK, I\'m all set!' ) }</a>
+					</div>
+				}
 
 				<QueryReaderStartRecommendations />
 				<header className="reader-start__intro">
@@ -87,7 +97,7 @@ const Start = React.createClass( {
 
 				{ ! hasRecommendations && this.renderLoadingPlaceholders() }
 
-				{ hasRecommendations && <Masonry className="reader-start__cards"  updateOnEachImageLoad={ true } options={ { gutter: 14 } }>
+				{ hasRecommendations && <Masonry className="reader-start__cards" updateOnEachImageLoad={ true } options={ { gutter: 14 } }>
 					{ this.props.recommendationIds ? map( this.props.recommendationIds, ( recId ) => {
 						return (
 							<StartCard
