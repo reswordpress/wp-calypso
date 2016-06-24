@@ -230,7 +230,7 @@
 
 .reader-start-card__site-info {
 	float: left;
-	width: 40%;
+	width: 39.5%;
 }
 
 .reader-start-card__site-title {
@@ -353,7 +353,7 @@
 	}
 }
 
-/* Photo cards */
+// Photo cards
 
 .is-photo {
 
@@ -515,60 +515,62 @@
 
 // Graduation button
 
-.reader-start__bar-follow,
-.reader-start__bar-following {
-	animation: slideIn .3s ease-out 1 forwards;
-	background: $blue-medium;
-	border-radius: 24px;
-	color: white;
-	font-size: 14px;
-	margin: 0;
-	opacity: 1;
-	padding: 10px 25px;
-	position: fixed;
-		left: 49%;
-		bottom: 20px;
-	text-align: center;
-	z-index: 2;
-}
+.reader-start__bar {
 
-.reader-start__bar-follow {
-
-	@include breakpoint ( "<660px" ) {
-		left: 20%;
-		width: 60%;
+	&.is-follow,
+	&.is-following {
+		animation: slideIn .3s ease-out 1 forwards;
+		background: $blue-medium;
+		border-radius: 24px;
+		color: white;
+		font-size: 14px;
+		margin: 0;
+		opacity: 1;
+		padding: 10px 25px;
+		position: fixed;
+			left: 49%;
+			bottom: 20px;
+		text-align: center;
+		z-index: 2;
 	}
 
-	@include breakpoint ( "<480px" ) {
-		font-size: 12px;
-		left: 5%;
-		width: 80%;
+	&.is-following {
+		background: $alert-green;
+		box-sizing: border-box;
+		display: flex;
+		padding: 0;
+		position: fixed;
+			left: 48%;
+
+		.reader-start__bar-text {
+			padding: 12px 18px;
+		}
+
+		@include breakpoint ( "<960px" ) {
+			left: 41%;
+		}
+
+		@include breakpoint ( "<660px" ) {
+			left: 18%;
+		}
+
+		@include breakpoint ( "<480px" ) {
+			font-size: 12px;
+			left: 10%;
+		}
 	}
-}
 
-.reader-start__bar-following {
-	background: $alert-green;
-	box-sizing: border-box;
-	display: flex;
-	padding: 0;
-	position: fixed;
-		left: 48%;
+	&.is-follow {
+		@include breakpoint ( "<660px" ) {
+			left: 20%;
+			width: 60%;
+		}
 
-	.reader-start__bar-text {
-		padding: 12px 18px;
-	}
-
-	@include breakpoint ( "<960px" ) {
-		left: 42%;
-	}
-
-	@include breakpoint ( "<660px" ) {
-		left: 22%;
-	}
-
-	@include breakpoint ( "<480px" ) {
-		font-size: 12px;
-		left: 12%;
+		@include breakpoint ( "<480px" ) {
+			font-size: 12px;
+			left: 5%;
+			width: 80%;
+		}
 	}
 }
 

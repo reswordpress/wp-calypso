@@ -69,13 +69,13 @@ const Start = React.createClass( {
 			<Main className="reader-start">
 
 				{ /* Have not followed a site yet */ }
-				<div className="reader-start__bar-follow">
+				<div className="reader-start__bar is-follow">
 					<span className="reader-start__bar-text">{ this.translate( 'Follow one or more sites to get started' ) }</span>
 				</div>
 
 				{ /* Following at least one or more sites */ }
 				{ canGraduate &&
-					<div className="reader-start__bar-following">
+					<div className="reader-start__bar is-following">
 						<span className="reader-start__bar-text">
 							{
 								this.translate(
@@ -90,7 +90,7 @@ const Start = React.createClass( {
 								)
 							}
 						</span>
-						<a className="reader-start__bar-action">{ this.translate( 'I\'m all set!' ) }</a>
+						<a className="reader-start__bar-action">{ this.translate( 'OK, I\'m all set!' ) }</a>
 					</div>
 				}
 
