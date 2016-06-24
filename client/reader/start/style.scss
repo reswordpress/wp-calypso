@@ -513,74 +513,28 @@
 	margin-left: 4px;
 }
 
-/* .reader-start__bar {
-	animation: slideout-bar 1.5s ease-out 1 forwards;
-	background: rgba( 102, 142, 170, .9 );
-	padding: 8px;
-	position: fixed;
-		bottom: 0;
-	width: 100%;
-	z-index: 5000;
-
-    button {
-
-    	@include breakpoint( ">660px" ) {
-    		float: right;
-    	}
-    }
-}
-
-.reader-start__bar-action {
-	color: $white;
-	margin-left: 36%;
-	width: 50%;
-
-	@include breakpoint( "<960px" ) {
-		margin-left: 10%;
-		width: 80%;
-	}
-
-	@include breakpoint( "<660px" ) {
-		text-align: center;
-		width: 90%;
-	}
-
-	@include breakpoint( "<480px" ) {
-		margin: -10px 0 0 10px;
-	}
-}
-
-.reader-start__bar-text {
-	display: inline-block;
-	font-size: 18px;
-	margin-top: 8px;
-}
-
-@keyframes slideout-bar {
-    0% {
-        transform: translateY( calc( 100vh - 100px ) );
-    }
-
-    100% {
-    	transform: translateY( 0 );
-    }
-} */
-
 // Graduation button
 
-
+.reader-start__bar-follow,
 .reader-start__bar-following {
-	animation: slideIn .5s ease-out 1 forwards;
-	background: $alert-green;
+	animation: slideIn .3s ease-out 1 forwards;
+	background: $blue-medium;
 	border-radius: 24px;
 	color: white;
 	z-index: 2;
 	margin: 0;
 	opacity: 1;
+	padding: 10px 25px;
+	position: fixed;
+		left: 48%;
+		bottom: 30px;
+}
+
+.reader-start__bar-following {
+	background: $alert-green;
 	padding: 10px 0 10px 25px;
 	position: fixed;
 		left: 45%;
-		bottom: 30px;
 }
 
 .reader-start__bar-action {
