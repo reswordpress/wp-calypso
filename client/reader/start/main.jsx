@@ -69,11 +69,20 @@ const Start = React.createClass( {
 		const hasRecommendations = this.props.recommendationIds.length > 0;
 		return (
 			<Main className="reader-start">
+
+				{ /* After one or more sites have been followed */ }
+				<div className="reader-start__bar-following">
+					<span className="reader-start__bar-text">{ this.translate( 'Great! You\'re now following 10 sites' ) }</span>
+					<a className="reader-start__bar-action">{ this.translate( 'OK, I\'m all set!' ) }</a>
+				</div>
+
+
+
 				<QueryReaderStartRecommendations />
 				<header className="reader-start__intro">
 					<h1 className="reader-start__title">{ this.translate( 'Welcome to the WordPress.com Reader' ) }</h1>
-					<p className="reader-start__description">{ this.translate( "Discover great stories and read your favorite sites' posts in one place. Every time there are new updates to the sites you follow, you'll be the first to know!" ) }</p>
-					<p className="reader-start__description">{ this.translate( "We've suggested some sites that you might enjoy. Follow one or more sites to get started." ) }</p>
+					<p className="reader-start__description">{ this.translate( 'Reader is like a customizable newspaper with stories from your favorite places. Follow a few sites and their latest posts will appear here.' ) }</p>
+					<p className="reader-start__description">{ this.translate( 'Below are some suggestions – Follow one or more sites to get started!' ) }</p>
 				</header>
 
 				{ ! hasRecommendations && this.renderLoadingPlaceholders() }
@@ -87,26 +96,6 @@ const Start = React.createClass( {
 						);
 					} ) : null }
 				</Masonry> }
-
-				{ hasRecommendations && <RootChild className="reader-start__bar">
-					<div className="reader-start__bar-action main">
-						<span className="reader-start__bar-text">
-							{ canGraduate
-								? this.translate(
-									'Great! You\'re now following %(totalSubscriptions)d site.',
-									'Great! You\'re now following %(totalSubscriptions)d sites.', {
-										count: this.state.totalSubscriptions,
-										args: {
-											totalSubscriptions: this.state.totalSubscriptions
-										}
-									}
-								)
-								: this.translate( 'Follow one or more sites to get started' )
-							}
-						</span>
-						<Button onClick={ this.graduateColdStart } disabled={ ! canGraduate }>{ this.translate( "OK, I'm all set!" ) }</Button>
-					</div>
-				</RootChild> }
 			</Main>
 		);
 	}
