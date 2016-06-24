@@ -90,7 +90,7 @@ const Start = React.createClass( {
 								)
 							}
 						</span>
-						<a className="reader-start__bar-action">{ this.translate( 'OK, I\'m all set!' ) }</a>
+						<a className="reader-start__bar-action">{ this.translate( 'I\'m all set!' ) }</a>
 					</div>
 				}
 

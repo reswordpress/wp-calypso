@@ -521,14 +521,15 @@
 	background: $blue-medium;
 	border-radius: 24px;
 	color: white;
-	z-index: 2;
+	font-size: 14px;
 	margin: 0;
 	opacity: 1;
 	padding: 10px 25px;
 	position: fixed;
-		left: 48%;
-		bottom: 30px;
+		left: 49%;
+		bottom: 20px;
 	text-align: center;
+	z-index: 2;
 }
 
 .reader-start__bar-follow {
@@ -539,6 +540,7 @@
 	}
 
 	@include breakpoint ( "<480px" ) {
+		font-size: 12px;
 		left: 5%;
 		width: 80%;
 	}
@@ -546,9 +548,28 @@
 
 .reader-start__bar-following {
 	background: $alert-green;
-	padding: 10px 0 10px 25px;
+	box-sizing: border-box;
+	display: flex;
+	padding: 0;
 	position: fixed;
-		left: 45%;
+		left: 48%;
+
+	.reader-start__bar-text {
+		padding: 12px 18px;
+	}
+
+	@include breakpoint ( "<960px" ) {
+		left: 42%;
+	}
+
+	@include breakpoint ( "<660px" ) {
+		left: 22%;
+	}
+
+	@include breakpoint ( "<480px" ) {
+		font-size: 12px;
+		left: 12%;
+	}
 }
 
 .reader-start__bar-action {
@@ -558,8 +579,8 @@
 	border: 0;
 	color: $white;
 	cursor: pointer;
-	margin-left: 12px;
-	padding: 12px 20px 12px 18px;
+	margin-left: auto;
+	padding: 12px 14px 12px 13px;
 
 	&:hover {
 		background: lighten( $alert-green, 15% );
