@@ -5,6 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import pickBy from 'lodash/pickBy';
 import merge from 'lodash/merge';
+import mapValues from 'lodash/mapValues';
 
 /**
  * Internal dependencies
@@ -26,28 +27,14 @@ import PageViewTracker from 'lib/analytics/page-view-tracker';
 import config from 'config';
 
 const ThemesMultiSite = React.createClass( {
-
 	getInitialState() {
 		return {
-			selectedTheme: null,
-			selectedAction: null,
+			showPreview: false
 		};
-	},
-
-	showSiteSelectorModal( action, theme ) {
-		this.setState( { selectedTheme: theme, selectedAction: action } );
 	},
 
 	togglePreview( theme ) {
 		this.setState( { showPreview: ! this.state.showPreview, previewingTheme: theme } );
-	},
-
-	hideSiteSelectorModal() {
-		this.showSiteSelectorModal( null, null );
-	},
-
-	isThemeOrActionSet() {
-		return this.state.selectedTheme || this.state.selectedAction;
 	},
 
 	getButtonOptions() {
@@ -57,16 +44,16 @@ const ThemesMultiSite = React.createClass( {
 			},
 			purchase: config.isEnabled( 'upgrades/checkout' )
 				? {
-					action: theme => this.showSiteSelectorModal( 'purchase', theme ),
+					action: this.props.options.purchase.action,
 					hideForTheme: theme => ! theme.price
 				}
 				: {},
 			activate: {
-				action: theme => this.showSiteSelectorModal( 'activate', theme ),
+				action: this.props.options.activate.action,
 				hideForTheme: theme => theme.price
 			},
 			tryandcustomize: {
-				action: theme => this.showSiteSelectorModal( 'tryandcustomize', theme ),
+				action: this.props.options.tryandcustomize.action
 			},
 			separator: {
 				separator: true
@@ -94,6 +81,7 @@ const ThemesMultiSite = React.createClass( {
 	},
 
 	render() {
+		console.log( this.props );
 		const buttonOptions = this.getButtonOptions();
 
 		return (
@@ -126,28 +114,68 @@ const ThemesMultiSite = React.createClass( {
 					tier={ this.props.tier }
 					queryParams={ this.props.queryParams }
 					themesList={ this.props.themesList } />
-				{ this.isThemeOrActionSet() && <ThemesSiteSelectorModal
-					name={ this.state.selectedAction /* TODO: Can we get rid of this prop? */ }
-					label={ actionLabels[ this.state.selectedAction ].label }
-					header={ actionLabels[ this.state.selectedAction ].header }
-					selectedTheme={ this.state.selectedTheme }
-					onHide={ this.hideSiteSelectorModal }
-					action={ this.props[ this.state.selectedAction ] }
-					sourcePath={ '/design' }
-				/> }
 			</Main>
 		);
 	}
 } );
+
+const ThemesMultiSiteComp = ( props ) => (
+	<ThemesSiteSelectorModal { ...props } sourcePath={ '/design' }>
+		<ThemesMultiSite />
+	</ThemesSiteSelectorModal>
+);
 
 export default connect(
 	state => ( {
 		queryParams: getQueryParams( state ),
 		themesList: getThemesList( state )
 	} ),
+	// dispatch => [ ].map( action => { action: dispatch( action ) } )
 	{
 		activate,
 		tryandcustomize,
 		purchase
-	}
-)( ThemesMultiSite );
+	},
+	( stateProps, dispatchProps, ownProps ) => Object.assign(
+		{},
+		ownProps,
+		stateProps,
+		{ options:
+		merge( {}, //Object.assign( {},
+		mapValues( dispatchProps, action => ( {
+				action
+			} ) ),
+			{
+				purchase: config.isEnabled( 'upgrades/checkout' )
+					? {
+						//action: this.props.options.purchase.action,
+						hideForTheme: theme => ! theme.price
+					}
+					: {},
+				activate: {
+					//action: this.props.options.activate.action,
+					hideForTheme: theme => theme.price
+				},
+				tryandcustomize: {
+					//action: this.props.options.tryandcustomize.action
+				},
+				separator: {
+					separator: true
+				},
+				details: {
+					getUrl: theme => getDetailsUrl( theme ),
+				},
+				support: {
+					getUrl: theme => getSupportUrl( theme ),
+					// Free themes don't have support docs.
+					hideForTheme: theme => ! isPremium( theme )
+				},
+				help: {
+					getUrl: theme => getHelpUrl( theme )
+				},
+			},
+		//),
+		actionLabels
+	) }
+	)
+)( ThemesMultiSiteComp );
