@@ -70,6 +70,7 @@ const ThemesMultiSite = React.createClass( {
 				getUrl: theme => getHelpUrl( theme )
 			},
 		};
+		return this.props.options;
 		return merge( {}, buttonOptions, actionLabels );
 	},
 

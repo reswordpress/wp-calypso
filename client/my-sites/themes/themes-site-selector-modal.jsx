@@ -73,7 +73,11 @@ const ThemesSiteSelectorModal = React.createClass( {
 		} = this.state.selectedOption;
 
 		const wrappedOptions = mapValues( this.props.options,
-			option => Object.assign( {}, option, { action: theme => this.showSiteSelectorModal( option, theme ) } )
+			option => Object.assign(
+				{},
+				option,
+				option.action ? { action: theme => this.showSiteSelectorModal( option, theme ) } : {}
+			)
 		);
 
 		const children = React.cloneElement(
