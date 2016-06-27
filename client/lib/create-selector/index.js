@@ -62,6 +62,10 @@ const DEFAULT_GET_CACHE_KEY = ( () => {
 	};
 } )();
 
+const makeSelectorFromArray = ( dependants ) =>
+	( state, ...args ) => dependants.map( dependant =>
+		dependant( state, ...args ) );
+
 /**
  * Returns a memoized state selector for use with the Redux global application state.
  *
@@ -75,6 +79,10 @@ export default function createSelector( selector, getDependants = DEFAULT_GET_DE
 	let lastDependants;
 
 	return Object.assign( function( state, ...args ) {
+		if ( Array.isArray( getDependants ) ) {
+			getDependants = makeSelectorFromArray( getDependants );
+		}
+
 		let currentDependants = getDependants( state, ...args );
 		if ( ! Array.isArray( currentDependants ) ) {
 			currentDependants = [ currentDependants ];
