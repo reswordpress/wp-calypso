@@ -26,7 +26,8 @@ import sitesFactory from 'lib/sites-list';
 import { FEATURE_CUSTOM_DESIGN } from 'lib/plans/constants';
 import UpgradeNudge from 'my-sites/upgrade-nudge';
 import { getSelectedSite } from 'state/ui/selectors';
-import { isSiteCustomizable, isJetpackSite } from 'state/sites/selectors';
+import { isJetpackSite } from 'state/sites/selectors';
+import { canCurrentUser } from 'state/current-user/selectors';
 import PageViewTracker from 'lib/analytics/page-view-tracker';
 import { ThemeShowcase } from './logged-out';
 
@@ -90,7 +91,7 @@ export default connect(
 			themesList: getThemesList( state ),
 			selectedSite,
 			isJetpack: isJetpackSite( state, selectedSite.ID ),
-			isCustomizable: isSiteCustomizable( state, selectedSite.ID )
+			isCustomizable: canCurrentUser( state, selectedSite.ID, 'edit_theme_options' )
 		};
 	},
 	{
