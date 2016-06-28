@@ -104,7 +104,7 @@ const Start = React.createClass( {
 				<header className="reader-start__intro">
 					<h1 className="reader-start__title">{ this.translate( 'Welcome to the WordPress.com Reader' ) }</h1>
 					<p className="reader-start__description">{ this.translate( 'Reader is like a customizable newspaper with stories from your favorite places. Every time there are new updates to the sites you follow, you\'ll be the first to know!' ) }</p>
-					<p className="reader-start__description">{ this.translate( 'Below are some suggestions – Follow one or more sites to get started!' ) }</p>
+					<p className="reader-start__description">{ this.translate( 'Below are some suggestions – Give it a try!' ) }</p>
 				</header>
 
 				{ ! hasRecommendations && this.renderLoadingPlaceholders() }
@@ -118,6 +118,9 @@ const Start = React.createClass( {
 						);
 					} ) : null }
 				</Masonry> }
+				<div className="reader-start__manage">{ this.translate( 'Didn\'t find a site you\'re looking for?' ) }
+					&nbsp;<a href="/following/edit">Follow by URL</a>
+				</div>
 			</Main>
 		);
 	}

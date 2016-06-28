@@ -23,7 +23,7 @@
 }
 
 .reader-start__description {
-	color: $gray;
+	color: darken( $gray, 10% );
 	font-size: 16px;
 	font-weight: 100;
 	line-height: 1.5;
@@ -35,8 +35,6 @@
 }
 
 .reader-start__cards {
-
-	padding-bottom: 100px;
 
 	@include breakpoint( "<480px" ) {
 		margin-top: -10px;
@@ -547,10 +545,10 @@
 		display: flex;
 		padding: 0;
 		position: fixed;
-			left: 48%;
+			left: 47%;
 
 		.reader-start__bar-text {
-			padding: 12px 18px;
+			padding: 12px 15px;
 		}
 
 		@include breakpoint ( "<960px" ) {
@@ -563,7 +561,7 @@
 
 		@include breakpoint ( "<480px" ) {
 			font-size: 12px;
-			left: 10%;
+			left: 7%;
 		}
 	}
 
@@ -578,6 +576,21 @@
 			left: 5%;
 			width: 80%;
 		}
+	}
+}
+
+.reader-start__manage {
+	color: darken( $gray, 10% );
+	margin: 20px 0 130px;
+	text-align: center;
+
+	a,
+	a:visited {
+		text-decoration: underline;
+	}
+
+	a:hover {
+		text-decoration: none;
 	}
 }
 
