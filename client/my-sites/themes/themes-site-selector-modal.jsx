@@ -80,19 +80,19 @@ const ThemesSiteSelectorModal = React.createClass( {
 
 		return (
 			<div>
-			{ children }
-			{ this.isThemeOrActionSet() && <SiteSelectorModal className="themes__site-selector-modal"
-				isVisible={ true }
-				filter={ function( site ) {
-					return ! site.jetpack;
-				} /* No Jetpack sites for now. */ }
-				hide={ this.hideSiteSelectorModal }
-				mainAction={ this.redirectAndCallAction }
-				mainActionLabel={ label }>
+				{ children }
+				{ this.isThemeOrActionSet() && <SiteSelectorModal className="themes__site-selector-modal"
+					isVisible={ true }
+					filter={ function( site ) {
+						return ! site.jetpack;
+					} /* No Jetpack sites for now. */ }
+					hide={ this.hideSiteSelectorModal }
+					mainAction={ this.redirectAndCallAction }
+					mainActionLabel={ label }>
 
-				<Theme isActionable={ false } theme={ this.state.selectedTheme } />
-				<h1>{ header }</h1>
-			</SiteSelectorModal> }
+					<Theme isActionable={ false } theme={ this.state.selectedTheme } />
+					<h1>{ header }</h1>
+				</SiteSelectorModal> }
 			</div>
 		);
 	}
