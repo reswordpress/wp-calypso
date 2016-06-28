@@ -69,7 +69,7 @@ export class MetaTitleEditor extends Component {
 		};
 
 		this.switchType = this.switchType.bind( this );
-		this.update = this.update.bind( this );
+		this.updateTitleFormat = this.updateTitleFormat.bind( this );
 	}
 
 	switchType( { value: type } ) {
@@ -79,7 +79,7 @@ export class MetaTitleEditor extends Component {
 		this.setState( { tokens, type } );
 	}
 
-	update( values ) {
+	updateTitleFormat( values ) {
 		const { saveMetaTitle, translate } = this.props;
 		const { type } = this.state;
 
@@ -118,7 +118,7 @@ export class MetaTitleEditor extends Component {
 				/>
 				<TokenField
 					disabled={ disabled }
-					onChange={ this.update }
+					onChange={ this.updateTitleFormat }
 					saveTransform={ identity } // don't trim whitespace
 					suggestions={ suggestions }
 					value={ values }
