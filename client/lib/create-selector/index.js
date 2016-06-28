@@ -78,11 +78,11 @@ export default function createSelector( selector, getDependants = DEFAULT_GET_DE
 	const memoizedSelector = memoize( selector, getCacheKey );
 	let lastDependants;
 
-	return Object.assign( function( state, ...args ) {
-		if ( Array.isArray( getDependants ) ) {
-			getDependants = makeSelectorFromArray( getDependants );
-		}
+	if ( Array.isArray( getDependants ) ) {
+		getDependants = makeSelectorFromArray( getDependants );
+	}
 
+	return Object.assign( function( state, ...args ) {
 		let currentDependants = getDependants( state, ...args );
 		if ( ! Array.isArray( currentDependants ) ) {
 			currentDependants = [ currentDependants ];
