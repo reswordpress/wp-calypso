@@ -5,6 +5,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import map from 'lodash/map';
 import find from 'lodash/find';
+import get from 'lodash/get';
 import includes from 'lodash/includes';
 
 /**
@@ -13,12 +14,56 @@ import includes from 'lodash/includes';
 import { getSelectedSiteId } from 'state/ui/selectors';
 import { getSiteSlug } from 'state/sites/selectors';
 import { getAllPostCounts } from 'state/posts/counts/selectors';
+import { mapPostStatus } from 'lib/route/path';
 import UrlSearch from 'lib/mixins/url-search';
 import QueryPostCounts from 'components/data/query-post-counts';
 import SectionNav from 'components/section-nav';
 import NavTabs from 'components/section-nav/tabs';
 import NavItem from 'components/section-nav/item';
 import Search from 'components/search';
+
+/**
+ * Constants
+ */
+const POST_STATUSES = [ 'publish', 'draft', 'pending', 'private', 'future', 'trash' ];
+
+/**
+ * Utility
+ */
+
+/**
+ * Returns an object of normalized post counts, summing publish/private and
+ * pending/draft counts.
+ *
+ * @param  {Object} counts Original post counts
+ * @return {Object}        Normalized post counts
+ */
+function getNormalizedCounts( counts ) {
+	return POST_STATUSES.reduce( ( memo, status ) => {
+		const count = get( counts, status, 0 );
+
+		let key;
+		switch ( status ) {
+			case 'publish':
+			case 'private':
+				key = 'publish';
+				break;
+
+			case 'draft':
+			case 'pending':
+				key = 'draft';
+				break;
+
+			default:
+				key = status;
+		}
+
+		return {
+			...memo,
+			[ key ]: ( memo[ key ] || 0 ) + count
+		};
+	}, {} );
+}
 
 const PostTypeFilter = React.createClass( {
 	mixins: [ UrlSearch ],
@@ -38,12 +83,12 @@ const PostTypeFilter = React.createClass( {
 	getNavItems() {
 		const { query, siteSlug, counts } = this.props;
 
-		return map( counts, ( count, status ) => {
+		return map( getNormalizedCounts( counts ), ( count, status ) => {
 			if ( ! count && ! includes( [ 'publish', 'draft' ], status ) ) {
 				return;
 			}
 
-			let label;
+			let label, pathStatus;
 			switch ( status ) {
 				case 'publish':
 					label = this.translate( 'Published', {
@@ -55,36 +100,22 @@ const PostTypeFilter = React.createClass( {
 					label = this.translate( 'Drafts', {
 						context: 'Filter label for posts list'
 					} );
-					break;
-
-				case 'pending':
-					label = this.translate( 'Pending', {
-						context: 'Filter label for posts list'
-					} );
-					break;
-
-				case 'private':
-					label = this.translate( 'Private', {
-						context: 'Filter label for posts list'
-					} );
+					pathStatus = 'drafts';
 					break;
 
 				case 'future':
 					label = this.translate( 'Scheduled', {
 						context: 'Filter label for posts list'
 					} );
+					pathStatus = 'scheduled';
 					break;
 
 				case 'trash':
 					label = this.translate( 'Trashed', {
 						context: 'Filter label for posts list'
 					} );
+					pathStatus = 'trashed';
 					break;
-			}
-
-			let pathStatus;
-			if ( 'publish' !== status ) {
-				pathStatus = status;
 			}
 
 			return {
@@ -96,7 +127,7 @@ const PostTypeFilter = React.createClass( {
 					pathStatus,
 					siteSlug
 				].filter( Boolean ).join( '/' ),
-				selected: query.status === status,
+				selected: mapPostStatus( pathStatus ) === query.status,
 				children: label
 			};
 		} ).filter( Boolean );
