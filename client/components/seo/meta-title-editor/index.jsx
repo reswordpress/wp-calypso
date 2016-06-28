@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import get from 'lodash/get';
 import identity from 'lodash/identity';
 import isString from 'lodash/isString';
 import isUndefined from 'lodash/isUndefined';
@@ -23,7 +24,7 @@ const titleTypes = translate => [
 	{ value: 'archives', label: translate( 'Archives' ) }
 ];
 
-const validTokens = translate => ( {
+const getValidTokens = translate => ( {
 	siteName: translate( 'Site Name' ),
 	tagline: translate( 'Tagline' ),
 	postTitle: translate( 'Post Title' ),
@@ -45,7 +46,7 @@ const tokenize = translate => s => {
 	if ( ! isString( s ) ) { return s }
 
 	// find token key from translated label
-	const tokens = validTokens( translate );
+	const tokens = getValidTokens( translate );
 	const type = Object
 		.keys( tokens )
 		.filter( k => tokens[ k ] === s )
@@ -70,7 +71,10 @@ export class MetaTitleEditor extends Component {
 	}
 
 	switchType( { value: type } ) {
-		this.setState( { type } );
+		const { titleFormats } = this.props;
+		const tokens = rawToNative( get( titleFormats, type, '' ) );
+
+		this.setState( { tokens, type } );
 	}
 
 	update( values ) {
@@ -89,26 +93,32 @@ export class MetaTitleEditor extends Component {
 			translate = identity
 		} = this.props;
 		const {
-			tokens
+			tokens,
+			type
 		} = this.state;
+
+		const validTokens = getValidTokens( translate );
 
 		const values = tokens.map(
 			token => 'string' !== token.type
-				? { ...token, value: validTokens( translate )[ token.type ] }
+				? { ...token, value: validTokens[ token.type ] }
 				: { ...token, isBorderless: true }
 		);
 
+		const suggestions = tokenMap[ type ].map( t => validTokens[ t ] );
+
 		return (
 			<div>
-				<SegmentedControl options={ titleTypes( translate ) } onSelect={ this.switchType } />
+				<SegmentedControl
+					initialSelected={ type }
+					options={ titleTypes( translate ) }
+					onSelect={ this.switchType }
+				/>
 				<TokenField
 					disabled={ disabled }
 					onChange={ this.update }
 					saveTransform={ identity } // don't trim whitespace
-					suggestions={ [
-						translate( 'Site Name' ),
-						translate( 'Post Title' )
-					] }
+					suggestions={ suggestions }
 					value={ values }
 				/>
 			</div>
