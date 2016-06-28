@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import { localize } from 'i18n-calypso';
 import times from 'lodash/times';
+import noop from 'lodash/noop';
 
 /**
  * Internal dependencies
@@ -50,7 +51,7 @@ class PlansFeaturesMain extends Component {
 		);
 	}
 
-	getPlanFeatures( site, intervalType ) {
+	getPlanFeatures( site, intervalType, upgradePlan ) {
 		if ( site.jetpack && intervalType === 'monthly' ) {
 			return (
 				<div className="plans-features-main__group">
@@ -70,9 +71,9 @@ class PlansFeaturesMain extends Component {
 		//TODO: we need to allow a free option in NUX flow
 		return (
 			<div className="plans-features-main__group">
-				<PlanFeatures plan={ PLAN_PERSONAL } /* onClick={ this.upgradePlan } */ />
-				<PlanFeatures plan={ PLAN_PREMIUM } /* onClick={ this.upgradePlan } */ />
-				<PlanFeatures plan={ PLAN_BUSINESS } /* onClick={ this.upgradePlan } */ />
+				<PlanFeatures plan={ PLAN_PERSONAL } onUpgradeClick={ upgradePlan } />
+				<PlanFeatures plan={ PLAN_PREMIUM } onUpgradeClick={ upgradePlan } />
+				<PlanFeatures plan={ PLAN_BUSINESS } onUpgradeClick={ upgradePlan } />
 			</div>
 		);
 	}
@@ -166,7 +167,7 @@ class PlansFeaturesMain extends Component {
 	}
 
 	render() {
-		const { site, plans, isInSignup, sitePlans, intervalType } = this.props;
+		const { site, plans, isInSignup, sitePlans, intervalType, onUpgradeClick } = this.props;
 
 		const isLoadingSitePlans = ! isInSignup && ! sitePlans.hasLoadedFromServer;
 
@@ -176,7 +177,7 @@ class PlansFeaturesMain extends Component {
 
 		return (
 			<div class="plans-features-main">
-				{ this.getPlanFeatures( site, intervalType ) }
+				{ this.getPlanFeatures( site, intervalType, onUpgradeClick ) }
 				{ this.getFAQ( site ) }
 			</div>
 		);
