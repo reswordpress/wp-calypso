@@ -12,7 +12,7 @@ import includes from 'lodash/includes';
  * Internal dependencies
  */
 import { getSelectedSiteId } from 'state/ui/selectors';
-import { getSiteSlug } from 'state/sites/selectors';
+import { getSiteSlug, isJetpackSite } from 'state/sites/selectors';
 import { getAllPostCounts } from 'state/posts/counts/selectors';
 import { mapPostStatus } from 'lib/route/path';
 import UrlSearch from 'lib/mixins/url-search';
@@ -71,6 +71,8 @@ const PostTypeFilter = React.createClass( {
 	propTypes: {
 		siteId: PropTypes.number,
 		query: PropTypes.object,
+		jetpack: PropTypes.bool,
+		siteSlug: PropTypes.string,
 		counts: PropTypes.object
 	},
 
@@ -81,10 +83,10 @@ const PostTypeFilter = React.createClass( {
 	},
 
 	getNavItems() {
-		const { query, siteSlug, counts } = this.props;
+		const { query, siteSlug, jetpack, counts } = this.props;
 
 		return map( getNormalizedCounts( counts ), ( count, status ) => {
-			if ( ! count && ! includes( [ 'publish', 'draft' ], status ) ) {
+			if ( ! jetpack && ! count && ! includes( [ 'publish', 'draft' ], status ) ) {
 				return;
 			}
 
@@ -119,7 +121,7 @@ const PostTypeFilter = React.createClass( {
 			}
 
 			return {
-				count,
+				count: jetpack ? null : count,
 				key: `filter-${ status }`,
 				path: [
 					'/types',
@@ -134,13 +136,13 @@ const PostTypeFilter = React.createClass( {
 	},
 
 	render() {
-		const { siteId, query, counts } = this.props;
+		const { siteId, query, jetpack, counts } = this.props;
 		const navItems = this.getNavItems();
 		const selectedItem = find( navItems, 'selected' ) || {};
 
 		return (
 			<div>
-				{ query && siteId && (
+				{ query && siteId && ! jetpack && (
 					<QueryPostCounts
 						siteId={ siteId }
 						type={ query.type } />
@@ -148,7 +150,7 @@ const PostTypeFilter = React.createClass( {
 				<SectionNav
 					selectedText={ selectedItem.children }
 					selectedCount={ selectedItem.count }>
-					{ counts && [
+					{ ( jetpack || counts ) && [
 						<NavTabs
 							key="tabs"
 							label={ this.translate( 'Status', { context: 'Filter group label for tabs' } ) }
@@ -174,6 +176,7 @@ export default connect( ( state, ownProps ) => {
 	const siteId = getSelectedSiteId( state );
 	const props = {
 		siteId,
+		jetpack: isJetpackSite( state, siteId ),
 		siteSlug: getSiteSlug( state, siteId )
 	};
 
