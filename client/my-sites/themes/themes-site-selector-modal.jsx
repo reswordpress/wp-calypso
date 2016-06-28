@@ -17,17 +17,11 @@ import { trackClick } from './helpers';
 
 const ThemesSiteSelectorModal = React.createClass( {
 	propTypes: {
-		options: React.PropTypes.arrayOf( React.PropTypes.shape( {
+		options: React.PropTypes.objectOf( React.PropTypes.shape( {
 			label: React.PropTypes.string.isRequired,
 			header: React.PropTypes.string,
 			action: React.PropTypes.func
 		} ) ),
-		/*name: React.PropTypes.string.isRequired,
-		label: React.PropTypes.string.isRequired,
-		header: React.PropTypes.string.isRequired,
-		selectedTheme: PropTypes.object.isRequired,
-		onHide: PropTypes.func,
-		action: PropTypes.func,*/
 		// Will be prepended to site slug for a redirect on selection
 		sourcePath: PropTypes.string.isRequired,
 	},

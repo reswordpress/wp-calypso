@@ -37,53 +37,22 @@ const ThemesMultiSite = React.createClass( {
 		this.setState( { showPreview: ! this.state.showPreview, previewingTheme: theme } );
 	},
 
-	getButtonOptions() {
-		const buttonOptions = {
-			preview: {
-				action: theme => this.togglePreview( theme ),
-			},
-			purchase: config.isEnabled( 'upgrades/checkout' )
-				? {
-					action: this.props.options.purchase.action,
-					hideForTheme: theme => ! theme.price
-				}
-				: {},
-			activate: {
-				action: this.props.options.activate.action,
-				hideForTheme: theme => theme.price
-			},
-			tryandcustomize: {
-				action: this.props.options.tryandcustomize.action
-			},
-			separator: {
-				separator: true
-			},
-			details: {
-				getUrl: theme => getDetailsUrl( theme ),
-			},
-			support: {
-				getUrl: theme => getSupportUrl( theme ),
-				// Free themes don't have support docs.
-				hideForTheme: theme => ! isPremium( theme )
-			},
-			help: {
-				getUrl: theme => getHelpUrl( theme )
-			},
-		};
-		return this.props.options;
-		return merge( {}, buttonOptions, actionLabels );
-	},
-
 	onPreviewButtonClick( theme ) {
 		this.setState( { showPreview: false },
 			() => {
-				this.getButtonOptions().tryandcustomize.action( theme );
+				this.props.options.tryandcustomize.action( theme );
 			} );
 	},
 
 	render() {
-		console.log( this.props );
-		const buttonOptions = this.getButtonOptions();
+		const buttonOptions = merge(
+			{},
+			{ preview: {
+				label: actionLabels.preview.label,
+				action: theme => this.togglePreview( theme )
+			} },
+			this.props.options,
+		);
 
 		return (
 			<Main className="themes">
@@ -131,7 +100,6 @@ export default connect(
 		queryParams: getQueryParams( state ),
 		themesList: getThemesList( state )
 	} ),
-	// dispatch => [ ].map( action => { action: dispatch( action ) } )
 	{
 		activate,
 		tryandcustomize,
@@ -141,25 +109,19 @@ export default connect(
 		{},
 		ownProps,
 		stateProps,
-		{ options:
-		merge( {}, //Object.assign( {},
-		mapValues( dispatchProps, action => ( {
-				action
-			} ) ),
+		{ options: merge(
+			{},
+			mapValues( dispatchProps, action => ( { action } ) ),
 			{
 				purchase: config.isEnabled( 'upgrades/checkout' )
 					? {
-						//action: this.props.options.purchase.action,
 						hideForTheme: theme => ! theme.price
 					}
 					: {},
 				activate: {
-					//action: this.props.options.activate.action,
 					hideForTheme: theme => theme.price
 				},
-				tryandcustomize: {
-					//action: this.props.options.tryandcustomize.action
-				},
+				tryandcustomize: {},
 				separator: {
 					separator: true
 				},
@@ -175,8 +137,7 @@ export default connect(
 					getUrl: theme => getHelpUrl( theme )
 				},
 			},
-		//),
-		actionLabels
-	) }
+			actionLabels
+		) }
 	)
 )( ThemesMultiSiteComp );
