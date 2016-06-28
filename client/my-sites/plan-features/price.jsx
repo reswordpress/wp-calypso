@@ -12,14 +12,14 @@ import { getCurrencyObject } from 'lib/format-currency';
 export default class PlanFeaturesPrice extends Component {
 
 	render() {
-		const { currencyCode, rawPrice, original, discount } = this.props;
+		const { currencyCode, rawPrice, original, discounted } = this.props;
 		if ( ! currencyCode || ( rawPrice !== 0 && ! rawPrice ) ) {
 			return null;
 		}
 		const price = getCurrencyObject( rawPrice, currencyCode );
 		const classes = classNames( 'plan-features__price', {
 			'is-original': original,
-			'is-discount': discount
+			'is-discounted': discounted
 		} );
 		return (
 			<h4 className={ classes }>
@@ -47,5 +47,5 @@ PlanFeaturesPrice.propTypes = {
 PlanFeaturesPrice.defaultProps = {
 	currencyCode: 'USD',
 	original: false,
-	discount: false
+	discounted: false
 };

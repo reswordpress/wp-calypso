@@ -35,9 +35,9 @@ class PlanFeaturesHeader extends Component {
 			title,
 			translate
 		} = this.props;
-		const hasDiscount = !! discountPrice;
+		const isDiscounted = !! discountPrice;
 		const timeframeClasses = classNames( 'plan-features__header-timeframe', {
-			'is-discount': hasDiscount
+			'is-discounted': isDiscounted
 		} );
 		return (
 			<header className="plan-features__header" onClick={ this.props.onClick } >
@@ -73,7 +73,7 @@ class PlanFeaturesHeader extends Component {
 			return (
 				<span className="plan-features__header-price-group">
 					<PlanFeaturesPrice currencyCode={ currencyCode } rawPrice={ rawPrice } original />
-					<PlanFeaturesPrice currencyCode={ currencyCode } rawPrice={ discountPrice } discount />
+					<PlanFeaturesPrice currencyCode={ currencyCode } rawPrice={ discountPrice } discounted />
 				</span>
 			);
 		}
