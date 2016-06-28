@@ -38,14 +38,7 @@ const ThemesSingleSite = ( props ) => {
 		jetpackEnabled = config.isEnabled( 'manage/themes-jetpack' );
 
 	if ( isJetpack ) {
-		if ( jetpackEnabled ) {
-			if ( ! site.hasJetpackThemes ) {
-				return <JetpackUpgradeMessage site={ site } />;
-			}
-			if ( ! site.canManage() ) {
-				return <JetpackManageDisabledMessage site={ site } />;
-			}
-		} else { // ! jetpackEnabled
+		if ( ! jetpackEnabled ) {
 			return (
 				<Main className="themes">
 					<PageViewTracker path={ analyticsPath } title={ analyticsPageTitle }/>
@@ -61,6 +54,12 @@ const ThemesSingleSite = ( props ) => {
 						illustration="/calypso/images/drake/drake-jetpack.svg" />
 				</Main>
 			);
+		}
+		if ( ! site.hasJetpackThemes ) {
+			return <JetpackUpgradeMessage site={ site } />;
+		}
+		if ( ! site.canManage() ) {
+			return <JetpackManageDisabledMessage site={ site } />;
 		}
 	}
 
