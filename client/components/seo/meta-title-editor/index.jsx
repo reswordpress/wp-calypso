@@ -46,6 +46,8 @@ const tokenize = translate => s => {
 	if ( ! isString( s ) ) { return s }
 
 	// find token key from translated label
+	// e.g. "Post Title" > postTitle: translate( 'Post Title' )
+	//           s             k             tokens[ k ]
 	const tokens = getValidTokens( translate );
 	const type = Object
 		.keys( tokens )
