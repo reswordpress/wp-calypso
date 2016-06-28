@@ -36,7 +36,6 @@ const ThemesSiteSelectorModal = React.createClass( {
 	redirectAndCallAction( site ) {
 		const action = this.state.selectedOption.action;
 		const theme = this.state.selectedTheme;
-		console.log( 'sO', this.state.selectedOption, site, theme );
 		/**
 		 * Since this implies a route change, defer it in case other state
 		 * changes are enqueued, e.g. setSelectedTheme.
@@ -61,11 +60,6 @@ const ThemesSiteSelectorModal = React.createClass( {
 	},
 
 	render() {
-		const {
-			label,
-			header
-		} = this.state.selectedOption;
-
 		const wrappedOptions = mapValues( this.props.options,
 			option => Object.assign(
 				{},
@@ -78,6 +72,11 @@ const ThemesSiteSelectorModal = React.createClass( {
 			this.props.children,
 			Object.assign( {}, omit( this.props, [ 'children', 'options' ] ), { options: wrappedOptions } )
 		);
+
+		const {
+			label,
+			header
+		} = this.state.selectedOption;
 
 		return (
 			<div>
