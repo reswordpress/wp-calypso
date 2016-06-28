@@ -1,10 +1,24 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	classnames = require( 'classnames' );
+import React, { PropTypes } from 'react';
+import classnames from 'classnames';
 
-var MenuItem = React.createClass( {
+/**
+ * Internal dependencies
+ */
+import Gridicon from 'components/gridicon';
+
+export default React.createClass( {
+	displayName: 'PopoverMenuItem',
+
+	propTypes: {
+		isVisible: PropTypes.bool,
+		className: PropTypes.string,
+		icon: PropTypes.string,
+		focusOnHover: PropTypes.bool
+	},
+
 	getDefaultProps: function() {
 		return {
 			isVisible: false,
@@ -14,7 +28,13 @@ var MenuItem = React.createClass( {
 	},
 
 	render: function() {
-		var onMouseOver = this.props.focusOnHover ? this._onMouseOver : null;
+		const onMouseOver = this.props.focusOnHover ? this._onMouseOver : null;
+
+		let icon;
+		if ( this.props.icon ) {
+			icon = <Gridicon icon={ this.props.icon } size={ 18 } />;
+		}
+
 		return (
 			<button className={ classnames( 'popover__menu-item', this.props.className ) }
 					role="menuitem"
@@ -22,6 +42,7 @@ var MenuItem = React.createClass( {
 					onClick={ this.props.onClick }
 					onMouseOver={ onMouseOver }
 					tabIndex="-1">
+				{ icon }
 				{ this.props.children }
 			</button>
 		);
@@ -31,5 +52,3 @@ var MenuItem = React.createClass( {
 		event.target.focus();
 	}
 } );
-
-module.exports = MenuItem;
