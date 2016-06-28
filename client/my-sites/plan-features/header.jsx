@@ -68,6 +68,7 @@ class PlanFeaturesHeader extends Component {
 			discountPrice,
 			rawPrice,
 		} = this.props;
+
 		if ( discountPrice ) {
 			return (
 				<span className="plan-features__header-price-group">
@@ -76,6 +77,7 @@ class PlanFeaturesHeader extends Component {
 				</span>
 			);
 		}
+
 		return (
 			<PlanFeaturesPrice currencyCode={ currencyCode } rawPrice={ rawPrice } />
 		);
