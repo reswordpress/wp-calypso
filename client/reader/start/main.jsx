@@ -118,9 +118,11 @@ const Start = React.createClass( {
 						);
 					} ) : null }
 				</Masonry> }
+
+				{ hasRecommendations &&
 				<div className="reader-start__manage">{ this.translate( 'Didn\'t find a site you\'re looking for?' ) }
 					&nbsp;<a href="/following/edit">Follow by URL</a>
-				</div>
+				</div> }
 			</Main>
 		);
 	}
