@@ -63,8 +63,13 @@ const Start = React.createClass( {
 	},
 
 	render() {
-		const canGraduate = ( this.state.totalSubscriptions > 0 );
+		const totalSubscriptions = this.state.totalSubscriptions;
+
+		// Reduce the total subscription count by one for display (exclude the user's own site)
+		const totalSubscriptionsDisplay = totalSubscriptions > 0 ? totalSubscriptions - 1 : 0;
+		const canGraduate = ( this.state.totalSubscriptions > 1 );
 		const hasRecommendations = this.props.recommendationIds.length > 0;
+
 		return (
 			<Main className="reader-start">
 				{ /* Have not followed a site yet */ }
@@ -80,12 +85,12 @@ const Start = React.createClass( {
 						<span className="reader-start__bar-text">
 							{
 								this.translate(
-									'Great! You\'re now following %(totalSubscriptions)d site.',
-									'Great! You\'re now following %(totalSubscriptions)d sites.',
+									'Great! You\'re now following %(totalSubscriptionsDisplay)d site.',
+									'Great! You\'re now following %(totalSubscriptionsDisplay)d sites.',
 									{
-										count: this.state.totalSubscriptions,
+										count: totalSubscriptionsDisplay,
 										args: {
-											totalSubscriptions: this.state.totalSubscriptions
+											totalSubscriptionsDisplay: totalSubscriptionsDisplay
 										}
 									}
 								)
