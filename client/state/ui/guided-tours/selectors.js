@@ -109,12 +109,26 @@ export const getGuidedTourState = createSelector(
 		// note how we don't care about these:
 		// let { shouldReallyShow, tour } = tourState;
 
-		const tour = findEligibleTour( state );
+		let { tour } = tourState;
+
+		if ( ! tour ) {
+			tour = findEligibleTour( state );
+		}
+
 		const shouldReallyShow = !! tour;
 
 		console.log( 'tours reached', getToursFromFeaturesReached( state ) );
 		console.log( 'tours seen', getToursSeen( state ) );
 		console.log( 'found', tour );
+
+		if ( ! tour ) {
+			return {
+				...tourState,
+				shouldShow: false,
+				stepConfig: false,
+				nextStepConfig: false,
+			};
+		}
 
 		const tourConfig = getToursConfig( tour );
 
