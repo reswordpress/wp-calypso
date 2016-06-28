@@ -27,7 +27,8 @@ export const ThemeShowcase = React.createClass( {
 			getUrl: PropTypes.func,
 			action: PropTypes.func
 		} ) ),
-		defaultOption: PropTypes.string
+		defaultOption: PropTypes.string,
+		getScreenshotOption: PropTypes.func
 	},
 
 	getInitialState() {
@@ -57,7 +58,8 @@ export const ThemeShowcase = React.createClass( {
 				action: theme => this.togglePreview( theme )
 			} }
 		),
-			defaultOption = this.props.options[ this.props.defaultOption ];
+			defaultOption = this.props.options[ this.props.defaultOption ],
+			getScreenshotOption = theme => buttonOptions[ this.props.getScreenshotOption( theme ) ];
 
 		return (
 			<Main className="themes">
@@ -73,10 +75,10 @@ export const ThemeShowcase = React.createClass( {
 				<ThemesSelection search={ this.props.search }
 					selectedSite={ false }
 					onScreenshotClick={ function( theme ) {
-						buttonOptions.preview.action( theme );
+						getScreenshotOption( theme ).action( theme );
 					} }
-					getActionLabel={ function() {
-						return buttonOptions.preview.label;
+					getActionLabel={ function( theme ) {
+						return getScreenshotOption( theme ).label;
 					} }
 					getOptions={ function( theme ) {
 						return pickBy(
@@ -102,32 +104,36 @@ export default connect(
 		{},
 		ownProps,
 		stateProps,
-		{ options: merge(
-			{},
-			{
-				signup: {
-					action: dispatchProps.signup,
-					getUrl: theme => getSignupUrl( theme ),
+		{
+			options: merge(
+				{},
+				{
+					signup: {
+						action: dispatchProps.signup,
+						getUrl: theme => getSignupUrl( theme ),
+					},
+					preview: {
+						hideForTheme: theme => theme.active
+					},
+					separator: {
+						separator: true
+					},
+					details: {
+						getUrl: theme => getDetailsUrl( theme ),
+					},
+					support: {
+						getUrl: theme => getSupportUrl( theme ),
+						// Free themes don't have support docs.
+						hideForTheme: theme => ! isPremium( theme )
+					},
+					help: {
+						getUrl: theme => getHelpUrl( theme )
+					}
 				},
-				preview: {
-					hideForTheme: theme => theme.active
-				},
-				separator: {
-					separator: true
-				},
-				details: {
-					getUrl: theme => getDetailsUrl( theme ),
-				},
-				support: {
-					getUrl: theme => getSupportUrl( theme ),
-					// Free themes don't have support docs.
-					hideForTheme: theme => ! isPremium( theme )
-				},
-				help: {
-					getUrl: theme => getHelpUrl( theme )
-				}
-			},
-			actionLabels
-		), defaultOption: 'signup' }
+				actionLabels
+			),
+			defaultOption: 'signup',
+			getScreenshotOption: () => 'preview'
+		}
 	)
 )( ThemeShowcase );
