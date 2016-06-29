@@ -20,7 +20,6 @@ import NoResults from './no-results';
 import Search from './search';
 import { decodeEntities } from 'lib/formatting';
 import QueryTerms from 'components/data/query-terms';
-import { getSelectedSiteId } from 'state/ui/selectors';
 import {
 	isRequestingTermsForQueryIgnoringPage,
 	getTermsLastPageForQuery,
@@ -362,7 +361,7 @@ const TermTreeSelectorList = React.createClass( {
 
 		return (
 			<div ref={ this.setSelectorRef } className={ classes }>
-				{ this.state.requestedPages.map( ( page ) => (
+				{ siteId && this.state.requestedPages.map( ( page ) => (
 					<QueryTerms
 						key={ `query-${ page }` }
 						siteId={ siteId }
@@ -391,8 +390,7 @@ const TermTreeSelectorList = React.createClass( {
 } );
 
 export default connect( ( state, ownProps ) => {
-	const siteId = getSelectedSiteId( state );
-	const { taxonomy, query } = ownProps;
+	const { taxonomy, query, siteId } = ownProps;
 
 	return {
 		loading: isRequestingTermsForQueryIgnoringPage( state, siteId, taxonomy, query ),
